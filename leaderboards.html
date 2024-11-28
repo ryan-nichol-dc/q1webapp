@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboards</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            color: greenyellow;
+        }
+
+        p {
+            width: 800px;
+            font-size: 20px;
+        }
+
+        span {
+            color: white;
+        }
+    </style>
+</head>
+
+<body style="background-color: black;">
+    
+    <pre id="leaderboards" style="display: flex; gap: 20px; align-items: flex-start;"></pre>
+    <button id="buttonLoad">Load</button>
+
+    <script>
+
+        var submissions = [];
+        loadSubmissions(1);
+
+        function renderTable(submissions, title) {
+
+            const container = document.createElement("div");
+            const titlex = document.createElement("h3");
+            titlex.textContent = title;
+
+            container.appendChild(titlex);
+
+            // create table
+            const table = document.createElement("table");
+            table.border = "1";
+
+            submissions.forEach((element, index) => {
+                const row = document.createElement("tr");
+
+                // Create a cell for index
+                const indexCell = document.createElement("td");
+                indexCell.textContent = index + 1;
+                row.appendChild(indexCell);
+
+                // Create a cell for the element
+                const qcell = document.createElement("td");
+                qcell.textContent = element.username;
+                row.appendChild(qcell);
+
+                const dcell = document.createElement("td");
+                dcell.textContent = element.answer;
+                row.appendChild(dcell);
+
+                const tcell = document.createElement("td");
+                tcell.textContent = element.createdAt;
+                row.appendChild(tcell);
+
+                row.style.height = '5px';
+
+                table.appendChild(row);
+            });
+
+            container.appendChild(table);
+
+            // Append table to the container
+            const leaderboards = document.getElementById("leaderboards");
+            if (table) leaderboards.appendChild(container);
+        }
+
+        function loadSubmissions(pages) {
+
+            // ready to setup tables
+            if (pages == 5) {
+
+                // Q1
+                var q1Submissions = submissions.filter(obj => obj.question === "q1").sort((a, b) => a.username.localeCompare(b.username));
+                renderTable(q1Submissions, 'Q1 ALL');
+
+                var q1SubmissionsFastest = q1Submissions.filter(obj => obj.correct === '1').sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                renderTable(q1SubmissionsFastest, 'Q1 FASTEST');
+
+                // Q2
+                q1Submissions = submissions.filter(obj => obj.question === "q2").sort((a, b) => a.username.localeCompare(b.username));
+                renderTable(q1Submissions, 'Q2 ALL');
+
+                q1SubmissionsFastest = q1Submissions.filter(obj => obj.correct === '1').sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                renderTable(q1SubmissionsFastest, 'Q2 FASTEST');
+
+                // Q3
+                q1Submissions = submissions.filter(obj => obj.question === "q3").sort((a, b) => a.username.localeCompare(b.username));
+                renderTable(q1Submissions, 'Q3 ALL');
+
+                q1SubmissionsFastest = q1Submissions.filter(obj => obj.correct === '1').sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                renderTable(q1SubmissionsFastest, 'Q3 FASTEST');
+
+                //var leaderboardElement = document.getElementById('leaderboards');
+                //leaderboardElement.textContent = submissions;
+                return;
+            }
+
+            fetch('https://testapi.io/api/ryan-nichol-dc/resource/submission?page='+pages)
+            .then(res => res.json())
+            .then(res => submissions = submissions.concat(res.data))
+            .then(res => {
+                loadSubmissions(pages+1);
+            })
+        }
+
+    </script>
+</body>
+</html>

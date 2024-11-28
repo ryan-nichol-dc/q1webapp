@@ -1,0 +1,47 @@
+<h1>Question Three - THE PAYROLL LABYRINTH!</h1>
+<br>
+<p>
+    Welcome to DootaPay Inc., the leading global payroll processing company! Everything runs smoothly here... except
+    when the DootaBot, our payroll processing robot, gets stuck in the office maze on payday! Your job is to rescue
+    DootaBot and ensure the employees get paid on time. The entire office is counting on you — developers need their
+    coffee funds, consultants their travel reimbursements, and managers their bonuses (of course).
+</p>
+<br>
+<p>
+    DootaBot starts at its <span>payroll hub <b>(S)</b></span>, where it generates the magical payroll spreadsheets, and
+    it needs to navigate the maze to the bank <span>drop off point <b>(E)</b></span>. Along the way, it must avoid
+    <span>obstacales <b>(X)</b></span> like cubicle walls, cluttered desks, and overly chatty employees, whilst also
+    making the shortest possible trip. If DootaBot takes too long, chaos will ensue.
+</p>
+<p>
+    DootaBot can move <span>right, left, up or down</span> and <span>one step</span> at a time.
+<ol>
+    <li>S -> The starting point of the maze
+    <li>E -> The end point of the maze
+    <li>X -> An obstacle in the maze, you cannot move here
+    <li>= -> An open space in the maze, you can move here
+</ol>
+</p>
+<p>
+    Example Input:
+
+</p>
+
+<p style="border-color: white; border-width: 10px; color: white; width: 100px;">
+    XSXXX
+    <br>====X
+    <br>X=XXX
+    <br>X=EXX
+</p>
+<p>
+<ol>
+    <li>Calculate the shortest path starting at <span>S</span> and ending at <span>E</span>
+    <li>The shortest path in the example is (3,1) => (2, 1) => (1, 1) => (0, 1) => (0,2)
+    <li>The <span>final answer</span> is the number of steps it took, <span>4</span> steps
+</ol>
+</p>
+
+<br>
+
+<a href="https://raw.githubusercontent.com/ryan-nichol-dc/q1webapp/refs/heads/main/q3input.txt" style="color: white;"
+    target="_blank">Get your puzzle input here</a>

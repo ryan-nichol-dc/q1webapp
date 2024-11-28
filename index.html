@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤑🤑🤑🤑</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            color: greenyellow;
+        }
+
+        p {
+            width: 800px;
+            font-size: 20px;
+        }
+
+        span {
+            color: white;
+        }
+    </style>
+</head>
+
+<body style="background-color: black;">
+
+    <pre id="qid" style="font-size: 5px; color: black;">q1</pre>
+    <div id="question-content"></div>
+
+    <p>===================================================================================</p>
+    <pre>Enter your Datacom email*:</pre>
+    <input type="text" id="userEmail" placeholder="Type email here..."></input>
+    <pre>Submit your answer: </pre>
+    <pre style="color: red; font-weight: bold;" id="failedResult"></pre>
+    <pre style="color: greenyellow; font-weight: bold;" id="result"></pre>
+    <input type="text" id="userInput" placeholder="Type answer here..."></input>
+    <button id="apiCallButton">Submit Answer.</button>
+    <button id="nextQuestionButton">Next Question</button>
+    <pre id="apiResponse"></pre>
+    <p>===================================================================================</p>
+    <p style="height: 500px;"> </p>
+
+    <script>
+        var nextButton = document.getElementById('nextQuestionButton');
+        nextButton.style.visibility = 'hidden';
+
+        var qfile = 'q1content.html';
+        fetch(qfile)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('question-content').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('There was a problem fetching the file:', error);
+            });
+
+        document.getElementById('nextQuestionButton').addEventListener('click', async () => {
+
+            var resultFailed = document.getElementById('failedResult');
+            var resultCorrect = document.getElementById('result');
+            
+            resultFailed.textContent = '';
+            resultCorrect.textContent = '';
+
+            var qid = document.getElementById('qid');
+            if (qid.textContent === 'q1') {
+                qfile = 'q2content.html';
+                qid.textContent = 'q2';
+            }
+            else if (qid.textContent === 'q2') {
+                qfile = 'q3content.html';
+                qid.textContent = 'q3';
+            }
+            else if (qid.textContent === 'q3') {
+                qfile = 'q4content.html';
+                qid.textContent = 'q4';
+            }
+
+            var nextButton = document.getElementById('nextQuestionButton');
+            nextButton.style.visibility = 'hidden';
+
+            fetch(qfile)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('question-content').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('There was a problem fetching the file:', error);
+                });
+        });
+
+
+        document.getElementById('apiCallButton').addEventListener('click', async () => {
+
+            var submitButton = document.getElementById('apiCallButton');
+            submitButton.style.enabled = false;
+
+            var qid = document.getElementById('qid').innerText;
+            var resultFailed = document.getElementById('failedResult');
+            var resultCorrect = document.getElementById('result');
+            var input = document.getElementById('userInput').value;
+            var email = document.getElementById('userEmail').value;
+            
+            resultFailed.textContent = '';
+            resultCorrect.textContent = '';
+
+            // validate
+            if (email === '' || email === undefined) {
+                document.getElementById('failedResult').textContent = 'Enter your email before submitting answer!';
+                submitButton.style.enabled = true;
+                return;
+            }
+            
+           // loading things
+           resultCorrect.textContent = 'Verifying Answer . . . ╭(ʘ̆~◞౪◟~ʘ̆)╮';
+
+           var correct = false;
+           try {
+            var response = await fetch('https://testapi.io/api/ryan-nichol-dc/'+qid+input);
+            correct = response.ok;
+           }
+           catch {
+           }
+
+            var connectionMessage = '';
+            try {
+                var formData = new FormData();
+                formData.append('username', email);
+                formData.append('question', qid);
+                formData.append('correct', correct ? 1 : 0);
+                formData.append('answer', input);
+
+                const response = await fetch('https://testapi.io/api/ryan-nichol-dc/resource/submission', {
+                        method: 'POST',
+                        body: formData
+                    });
+            }
+            catch {
+                connectionMessage = 'BUT answer failed to submit, please send screenshot to Ryan Nichol.'
+            }
+
+            resultFailed.textContent = '';
+            resultCorrect.textContent = '';
+            if (correct) {
+                resultCorrect.textContent = 'CORRECT! ⊂(◉‿◉)つ ' + connectionMessage;
+                nextButton.style.visibility = 'visible';
+            } else {
+                resultFailed.textContent = 'WRONG! ʕノ•ᴥ•ʔノ ︵ ┻━┻ ' + connectionMessage;
+            }
+
+            submitButton.style.enabled = true;
+        });
+    </script>
+</body>
+
+</html>
