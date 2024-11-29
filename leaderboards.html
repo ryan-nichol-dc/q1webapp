@@ -61,8 +61,17 @@
                 dcell.textContent = element.answer;
                 row.appendChild(dcell);
 
+                const formatShortDateTime = (date) => {
+                    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const hours = String(date.getHours()).padStart(2, '0');
+                    const minutes = String(date.getMinutes()).padStart(2, '0');
+                    const seconds = String(date.getSeconds()).padStart(2, '0');
+                    return `${month}/${day} ${hours}:${minutes}:${seconds}`;
+                };
+
                 const tcell = document.createElement("td");
-                tcell.textContent = element.createdAt;
+                tcell.textContent = formatShortDateTime(element.createdAt);
                 row.appendChild(tcell);
 
                 row.style.height = '5px';
@@ -81,6 +90,24 @@
 
             // ready to setup tables
             if (pages == 5) {
+
+                // for (i = 0; i < submissions.length; i++) {
+                //     var sub = submissions[i];
+                //     fetch('https://testapi.io/api/ryan-nichol-dc/resource/submission/'+sub.id, {
+                //         method: 'DELETE',
+                //         headers: {
+                //             'Content-Type': 'application/json'
+                //         }
+                //     })
+                // }
+
+                for (i = 0; i < submissions.length; i++) {
+                    var sub = submissions[i];
+                    
+                    var date = new Date(sub.createdAt);
+                    // date.setHours(date.getHours());
+                    sub.createdAt = date;
+                }
 
                 // Q1
                 var q1Submissions = submissions.filter(obj => obj.question === "q1").sort((a, b) => a.username.localeCompare(b.username));
