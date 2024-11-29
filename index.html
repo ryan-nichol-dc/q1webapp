@@ -67,6 +67,8 @@
             resultFailed.textContent = '';
             resultCorrect.textContent = '';
 
+            document.getElementById('userInput').value = '';
+
             var qid = document.getElementById('qid');
             if (qid.textContent === 'q1') {
                 qfile = 'q2content.html';
@@ -102,6 +104,12 @@
 
         document.getElementById('apiCallButton').addEventListener('click', async () => {
 
+            // DO NOT LOOKING AT THIS CODE
+            // answers to questions
+            var qOneAnswer = 67;
+            var qTwoAnswer = 5028;
+            var qThreeAnswer = 6109;
+
             var submitButton = document.getElementById('apiCallButton');
             submitButton.style.enabled = false;
 
@@ -114,14 +122,12 @@
             resultFailed.textContent = '';
             resultCorrect.textContent = '';
 
-            // validate
             if (email === '' || email === undefined) {
                 document.getElementById('failedResult').textContent = 'Enter your email before submitting answer!';
                 submitButton.style.enabled = true;
                 return;
             }
             
-           // loading things
            resultCorrect.textContent = 'Verifying Answer . . . ╭(ʘ̆~◞౪◟~ʘ̆)╮';
 
            var correct = false;
